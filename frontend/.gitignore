@@ -1,0 +1,40 @@
+# Dependency directories
+node_modules/
+.pnpm-debug.log*
+
+# Build output
+dist/
+build/
+*.js.map
+*.css.map
+
+# Vite files
+.vite/
+
+# Cache and temporary files
+.cache/
+*.swp
+*.swo
+*.tmp
+.DS_Store
+
+# Editor and IDE files
+.vscode/
+.idea/
+*.iml
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Debug files
+debug.log
+
+# Mac system files
+.DS_Store
+
+# Miscellaneous
+*.log
+*.gz
+*.zip

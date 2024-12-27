@@ -41,7 +41,7 @@ app.post("/template", async (req: Request, res: Response) => {
         MAKE_WEBSITE_BEAUTIFUL,
         `Here is an artifact that contains all files of the project visible to you.\nConsider the contents of ALL files in the project.\n\n${reactBasePrompt}\n\nHere is a list of files that exist on the file system but are not being shown to you:\n\n  - .gitignore\n  - package-lock.json\n`,
       ],
-      uiPrompt: [reactBasePrompt],
+      stepsForUi: [reactBasePrompt],
     });
     return;
   }
@@ -52,7 +52,7 @@ app.post("/template", async (req: Request, res: Response) => {
         BUILD_BACKEND_PROFESSIONALLY,
         `Here is an artifact that contains all files of the project visible to you.\nConsider the contents of ALL files in the project.\n\n${nodeBasePrompt}\n\nHere is a list of files that exist on the file system but are not being shown to you:\n\n  - .gitignore\n  - package-lock.json\n`,
       ],
-      uiPrompt: [nodeBasePrompt],
+      stepsForUi: [nodeBasePrompt],
     });
     return;
   }
@@ -63,13 +63,12 @@ app.post("/template", async (req: Request, res: Response) => {
 app.post("/chat", async (req: Request, res: Response) => {
   /* 
    * The message body will contain array 3 elements: first 2 is the messages returned from the template endpoint and the third one is the prompt by the user and the role will be user in all 3
-
    * Structure:
     {
       "messages": [
         {
           "role": "user",
-          "parts": [msg1, msg2, msg3]
+          "parts": [{text: msg1}, {text: msg2}, {text: msg3}]
         }
       ]
     }

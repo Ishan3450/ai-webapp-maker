@@ -5,7 +5,8 @@ import {
 } from "./constants";
 import { stripIndents } from "./stripindents";
 
-export const MAKE_WEBSITE_BEAUTIFUL =  "For all designs I ask you to make, have them be beautiful, not cookie cutter. Make webpages that are fully featured and worthy for production.\n\nBy default, this template supports JSX syntax with Tailwind CSS classes, React hooks, and Lucide React for icons. Do not install other packages for UI themes, icons, etc unless absolutely necessary or I request them.\n\nUse icons from lucide-react for logos.\n\nUse stock photos from unsplash where appropriate, only valid URLs you know exist. Do not download the images, only link to them in image tags.\n\n";
+export const MAKE_WEBSITE_BEAUTIFUL =
+  "For all designs I ask you to make, have them be beautiful, not cookie cutter. Make webpages that are fully featured and worthy for production.\n\nBy default, this template supports JSX syntax with Tailwind CSS classes, React hooks, and Lucide React for icons. Do not install other packages for UI themes, icons, etc unless absolutely necessary or I request them.\n\nUse icons from lucide-react for logos.\n\nUse stock photos from unsplash where appropriate, only valid URLs you know exist. Do not download the images, only link to them in image tags.\n\n";
 
 export const BUILD_BACKEND_PROFESSIONALLY = `
 For all backend systems I ask you to create, ensure they are clean, scalable, and production-ready. Follow industry-standard practices for design, implementation, and security.
