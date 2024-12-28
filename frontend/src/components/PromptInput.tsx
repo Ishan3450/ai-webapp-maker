@@ -34,6 +34,7 @@ export function PromptInput({ onSubmit }: PromptInputProps) {
             <ArrowRight size={20} />
           </button>
         </form>
+
       </div>
     </div>
   );
