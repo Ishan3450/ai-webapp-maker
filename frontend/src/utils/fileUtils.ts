@@ -42,7 +42,7 @@ function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-// * this function only works while setting up the initial file structure from /template endpoint steps
+// * this function only works while setting up the initial file structure from /template endpoint steps not works while updaing the content of existing files
 // export async function createFileStructure(
 //   steps: Step[],
 //   updateSteps: any,
@@ -124,6 +124,48 @@ function delay(ms: number): Promise<void> {
 //   }
 // }
 
+/* Example File Structure:
+    [
+      {
+        name: "src",
+        type: "folder",
+        path: "src",
+        children: [
+          {
+            name: "components",
+            type: "folder",
+            path: "src/components",
+            children: [
+              {
+                name: "FileExplorer.tsx",
+                type: "file",
+                path: "src/components/FileExplorer.tsx",
+                content: "// FileExplorer component content",
+              },
+              {
+                name: "StepsList.tsx",
+                type: "file",
+                path: "src/components/StepsList.tsx",
+                content: "// StepsList component content",
+              },
+            ],
+          },
+          {
+            name: "App.tsx",
+            type: "file",
+            path: "src/App.tsx",
+            content: "// App component content",
+          },
+        ],
+      },
+      {
+        name: "package.json",
+        type: "file",
+        path: "package.json",
+        content: "// Package configuration",
+      },
+    ];
+*/
 export async function createFileStructure(
   steps: Step[],
   updateSteps: any,
@@ -180,10 +222,12 @@ export async function createFileStructure(
 
     let isUpdateHappened = false;
 
-    // Process each step
     for (const step of steps
       .filter(({ status }) => status === "pending")
       .filter((step) => step.type !== StepType.RunScript)) {
+      // TODO: REMOVE THIS DELAY IF STREAMING OF RESPONSE IS IMPLEMENTED
+      await delay(750);
+
       updateSteps((prev: Step[]) =>
         prev.map((s) => (s.id === step.id ? { ...s, status: "executing" } : s))
       );
@@ -199,6 +243,9 @@ export async function createFileStructure(
         step.code ?? "// code will come here",
         originalFiles
       );
+
+      // TODO: REMOVE THIS DELAY IF STREAMING OF RESPONSE IS IMPLEMENTED
+      await delay(750);
 
       updateSteps((prev: Step[]) =>
         prev.map((s) => (s.id === step.id ? { ...s, status: "completed" } : s))
