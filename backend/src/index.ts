@@ -9,6 +9,7 @@ import {
 } from "./prompts";
 import { reactBasePrompt } from "./defaults/react";
 import { nodeBasePrompt } from "./defaults/node";
+import { fullStackPrompt } from "./defaults/fullstack";
 
 dotenv.config();
 const app: Express = express();
@@ -32,7 +33,7 @@ app.post("/template", async (req: Request, res: Response) => {
       },
     ],
     systemInstruction:
-      "Select the most suitable framework for this project: Node.js or React.js. Return only a single word: 'node' or 'react'. No additional output.",
+      "Select the most suitable framework for this project: Node.js, React.js or not every project requires both so important thing to choose if it requires both a backend and a frontend then both. Return only a single word: 'node', 'react' or 'fullstack'. No additional output.",
   });
 
   const type: string = result.response.text();
@@ -56,6 +57,18 @@ app.post("/template", async (req: Request, res: Response) => {
         `Here is an artifact that contains all files of the project visible to you.\nConsider the contents of ALL files in the project.\n\n${nodeBasePrompt}\n\nHere is a list of files that exist on the file system but are not being shown to you:\n\n  - .gitignore\n  - package-lock.json\n`,
       ],
       stepsForUi: [nodeBasePrompt],
+    });
+    return;
+  }
+
+  if (type.indexOf("fullstack") !== -1) {
+    res.status(200).json({
+      promptForLLM: [
+        MAKE_WEBSITE_BEAUTIFUL,
+        BUILD_BACKEND_PROFESSIONALLY,
+        `Here is an artifact that contains all files of the project visible to you.\nConsider the contents of ALL files in the project.\n\n${fullStackPrompt}\n\nHere is a list of files that exist on the file system but are not being shown to you:\n\n  - .gitignore\n  - package-lock.json\n`,
+      ],
+      stepsForUi: [fullStackPrompt],
     });
     return;
   }

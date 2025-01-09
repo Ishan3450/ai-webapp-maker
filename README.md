@@ -2,11 +2,18 @@
 
 This project is a minimal version of platforms like bolt.new and v0.dev, designed to convert natural language prompts into executable code that runs directly in the browser. Built with React, Express, Node.js, TypeScript, and WebContainer technology, it integrates the experimental Google Gemini 2.0 Flash model for real-time code generation and natural language processing. Users can input prompts in plain English, and the system generates React applications or Node.js backends while maintaining context for iterative improvements. Although functional, the project is limited by the token constraints of free AI models, with room for future enhancements to expand its capabilities.
 
+## **Architecture of the project**
+
+![Architecture](https://github.com/user-attachments/assets/3cbd8769-345a-414e-b7ba-6c277b7e630a)
+
 ## **Demo**
+
+[Demo.webm](https://github.com/user-attachments/assets/7acc59ea-7e32-4301-8f79-2e7421f170d6)
 
 ## **Table of Contents**
 
 - [**AI Website Creator**](#ai-website-creator)
+  - [**Architecture of the project**](#architecture-of-the-project)
   - [**Demo**](#demo)
   - [**Table of Contents**](#table-of-contents)
   - [**Project Structure**](#project-structure)

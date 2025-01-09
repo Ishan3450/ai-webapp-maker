@@ -14,6 +14,7 @@ const PreviewCode = ({ webContainer, setMountAgain }: PrevieCodeProps) => {
 
     async function initWebcontainerPreviewFrame() {
         try {
+            if (url) setUrl("");
             // Install dependencies
             const installProcess = await webContainer?.spawn('npm', ['install']);
             if (installProcess) {
@@ -44,6 +45,7 @@ const PreviewCode = ({ webContainer, setMountAgain }: PrevieCodeProps) => {
 
     async function handleCommands() {
         try {
+            if (url) setUrl("");
             setLoading(true);
             setMountAgain(prev => !prev);
             const installProcess = await webContainer?.spawn('npm', ['install']);
@@ -60,13 +62,14 @@ const PreviewCode = ({ webContainer, setMountAgain }: PrevieCodeProps) => {
             console.error("Error during running commands:", error);
             setContainerLogs((prev: string[]) => [`Error: ${error}`, ...prev]);
         } finally {
-            await new Promise((resolve) => setTimeout(resolve, 50000));
+            await new Promise((resolve) => setTimeout(resolve, 35000));
             setLoading(false);
         }
     }
 
     async function handleLoadingWebcontainerPreview() {
         try {
+            if (url) setUrl("");
             setLoading(true);
             setMountAgain(prev => !prev);
             await webContainer?.spawn('npm', ['run', 'dev']);
@@ -80,8 +83,6 @@ const PreviewCode = ({ webContainer, setMountAgain }: PrevieCodeProps) => {
     }
 
     useEffect(() => {
-        initWebcontainerPreviewFrame();
-
         // Register WebContainer events
         webContainer?.on("server-ready", (port, url) => {
             console.log(`Server ready at port: ${port}, URL: ${url}`);
@@ -92,6 +93,8 @@ const PreviewCode = ({ webContainer, setMountAgain }: PrevieCodeProps) => {
             console.error("Error in the WebContainer:", err);
             setContainerLogs((prev) => [`Error: ${err.message}`, ...prev]);
         });
+
+        // initWebcontainerPreviewFrame();
     }, []);
 
 

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { ChevronRight, ChevronDown, File as FileIcon, Folder, Loader2, CheckCircle } from 'lucide-react';
+import { ChevronRight, ChevronDown, File as FileIcon, Folder, DownloadIcon } from 'lucide-react';
 import { File } from '../types';
+import JSZip from 'jszip';
+import { saveAs } from "file-saver";
 
 interface FileExplorerProps {
   files: File[];
@@ -53,18 +55,64 @@ function FileItem({ file, depth = 0, onFileSelect }: { file: File; depth?: numbe
 
 export function FileExplorer({ files, onFileSelect }: FileExplorerProps) {
 
+  const handleDownload = async () => {
+    const projectZip = new JSZip();
+
+    const addFilesToZip = (items: File[], folder: JSZip) => {
+      items.forEach((item) => {
+        if (item.type === "file") {
+          folder.file(item.name, item.content);
+        } else if (item.type === "folder") {
+          const newFolder = folder.folder(item.name);
+          addFilesToZip(item.children ?? [], newFolder!);
+        }
+      });
+    };
+
+    addFilesToZip(files, projectZip);
+
+    const content = await projectZip.generateAsync({ type: "blob" });
+    saveAs(content, "project.zip");
+  };
+
+  // files = files.sort((a: File, b: File): number => {
+  //   if (a.type === "folder") {
+  //     return -1;
+  //   }
+  //   return 1;
+  // })
+
   // sorting so that folders appears before than files
   files = files.sort((a: File, b: File): number => {
-    if (a.type === "folder") {
+    if (a.type === "folder" && b.type !== "folder") {
       return -1;
     }
-    return 1;
-  })
+    if (a.type !== "folder" && b.type === "folder") {
+      return 1;
+    }
+    if (a.type === "folder" && b.type === "folder") {
+      if (a.children && b.children) {
+        a.children = a.children.sort((childA, childB) => {
+          if (childA.type === "folder" && childB.type !== "folder") {
+            return -1;
+          }
+          if (childA.type !== "folder" && childB.type === "folder") {
+            return 1;
+          }
+          return 0;
+        });
+      }
+      return 0;
+    }
+    return 0;
+  });
+
 
   return (
     <div className="bg-gray-800 h-full flex flex-col">
-      <div className="px-4 py-2 text-lg font-semibold border-b border-gray-700 flex gap-2">
-        Files
+      <div className="px-4 py-2 text-lg font-semibold border-b border-gray-700 flex justify-between w-full">
+        <span>Files</span>
+        <span><DownloadIcon className='cursor-pointer hover:text-gray-500' onClick={handleDownload} /></span>
       </div>
       <div className="flex-1 overflow-y-auto p-2">
         {files.map((file, index) => (
